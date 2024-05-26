@@ -1,9 +1,4 @@
 const { Product,  product_images ,Category, Roast, CaffeineLevel,grind_options, flavor_profiles } = require('../models'); 
-// const { sequelize } = require('../config/db');
-const { sequelize } = require('sequelize');
-//  const grind_options = require('../models/grind_options');
-// const grind_options = require('../models/grind_option');
-// Create a new product
 exports.createProduct = async (req, res) => {
   try {
     const product = await Product.create(req.body);
@@ -13,25 +8,9 @@ exports.createProduct = async (req, res) => {
   }
 };
 
-// Get all products
-// exports.getAllProducts = async (req, res) => {
-//   try {
-//     const products = await Product.findAll();
-//     const product_image = await product_images.findAll();
-//     const category = await Category.findAll();
-//     const roast = await Roast.findAll();
-//     const grind_option = await grind_options.findAll();
-//     const caffeineLevel = await CaffeineLevel.findAll();
-//     const result = [products,product_image,category,roast,grind_option,caffeineLevel];
-//     res.json(result);
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// };
-
 exports.getAllProducts = async (req, res) => {
   try {
-    // ดึงข้อมูลสินค้าทั้งหมด
+    // ดึงข้อมูลproduct
     const product = await Product.findAll({
       include: [
         { model: product_images, as: 'product_images' },
@@ -43,7 +22,7 @@ exports.getAllProducts = async (req, res) => {
       ]
     });
 
-    // สร้างโครงสร้างข้อมูลในรูปแบบที่ต้องการ
+    
     // const result = products.map(product => {
     //   return {
     //     id: product.id,
@@ -121,11 +100,7 @@ exports.getProductById = async (req, res) => {
       caffeinelevel: product.Caffeinelevel ? product.Caffeinelevel.level : null,
       images: product.product_images ? product.product_images.map(product_images => product_images.image_url) : [],
       stock: product.stock,
-      // image_url: await product_image.findByPk(req.params.product_id),
-      // images: product.images.map(image => image.image_url),
-      // grind_options: product.grind_options.map(option => option.grind_option)
     };
-    // res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.json(result);
   } catch (error) {
     res.status(500).json({ error: error.message });
