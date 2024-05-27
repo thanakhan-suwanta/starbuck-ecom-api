@@ -2,12 +2,16 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const sequelize = require('./config/db');
 const productRoutes = require('./routes/productRoutes');
+// const orderRoutes = require('./controllers/orderController');
+const routerOders = require('./routes/orderRoutes');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT =  3000;
 
 app.use(bodyParser.json());
-app.use('/api', productRoutes);
+app.use('/api', productRoutes,);
+app.use('/api', routerOders);
+
 
 sequelize.authenticate()
   .then(() => {
